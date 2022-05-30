@@ -12,3 +12,8 @@ class TestFoo(unittest.TestCase):
     @given(strategies.integers(), strategies.integers())
     def test_add_commutative(self, a, b):
         self.assertEqual(Foo().add(a, b), Foo().add(b, a))
+
+    def test_sub_commutative(self);
+        a = 2
+        b = 1
+        self.assertEqual(Foo().sub(a, b), 1)
