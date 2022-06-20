@@ -1,3 +1,6 @@
+from email.policy import default
+
+
 registry = {}
 
 
@@ -41,12 +44,9 @@ def combMethod(before=None, after=None, around=None):
     """A decorator that implements function method to be run before, after or
     around another function, sort of like in the CLOS."""
     # Make sure all of our method are callable
-    def default_(*args, **kwargs):
-        return None
-    default = default_()
-    before = before if callable(before) else default
-    after = after if callable(after) else default
-    around = around if callable(around) else default
+    before = before if callable(before) else None
+    after = after if callable(after) else None
+    around = around if callable(around) else None
 
     # The actual decorator function.  The "real" function to be called will be
     # pased to this as `func`
@@ -56,11 +56,15 @@ def combMethod(before=None, after=None, around=None):
         # and its results are stored, then the around and after functions are
         # called.
         def decorate_order(*args, **kwargs):
-            around(*args, **kwargs)
-            before(*args, **kwargs)
+            if callable(around):
+                around(*args, **kwargs)
+            if callable(before):
+                before(*args, **kwargs)
             result = func(*args, **kwargs)
-            after(*args, **kwargs)
-            around(*args, **kwargs)
+            if callable(after):
+                after(*args, **kwargs)
+            if callable(around):
+                around(*args, **kwargs)
             return result
 
         return decorate_order
