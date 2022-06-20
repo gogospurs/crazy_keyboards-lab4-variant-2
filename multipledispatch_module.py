@@ -1,5 +1,6 @@
 registry = {}
 
+
 class Dispatch(object):
     def __init__(self, name):
         '''initial function'''
@@ -20,6 +21,7 @@ class Dispatch(object):
             raise TypeError("duplicate registration")
         self.typemapdict[types] = func
 
+
 def dispatch(*types):
     '''decorator'''
     def register(func):
@@ -39,7 +41,9 @@ def combMethod(before=None, after=None, around=None):
     """A decorator that implements function method to be run before, after or
     around another function, sort of like in the CLOS."""
     # Make sure all of our method are callable
-    default = lambda *args, **kwargs: None
+    def default_(*args, **kwargs):
+        return None
+    default = default_()
     before = before if callable(before) else default
     after = after if callable(after) else default
     around = around if callable(around) else default
@@ -63,6 +67,7 @@ def combMethod(before=None, after=None, around=None):
 
     return decorator
 
+
 def call_next_before(object1):
     '''return list of call next method for before method'''
     list1 = []
@@ -73,6 +78,7 @@ def call_next_before(object1):
                 list1.pop(-1)
     return list1
 
+
 def call_next_after(object1):
     '''return list of call next method for after method'''
     list1 = []
@@ -82,6 +88,7 @@ def call_next_after(object1):
             if list1:
                 list1.pop(0)
     return list1
+
 
 # Shortcuts for defining just one kind of hint
 def before(method):

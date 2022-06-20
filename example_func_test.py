@@ -15,13 +15,13 @@ class Testmultiple(unittest.TestCase):
 
         # optional
         self.assertEqual(add(a), a)
-    
+
     @given(st.floats(), st.floats())
     def test_add_float(self, a, b):
-        '''test floats''' 
+        '''test floats'''
         # two floats
         if (not (math.isinf(a) or math.isinf(b))
-        and (not (math.isnan(a) or math.isnan(b)))):
+            and (not (math.isnan(a) or math.isnan(b)))):
             self.assertEqual((add(a, b)-(a+b)) < 1e-3, True)
             self.assertEqual(add(a, b)-add(b, a) < 1e-3, True)
 
@@ -38,7 +38,7 @@ class Testmultiple(unittest.TestCase):
 
     @given(st.text(), st.text())
     def test_add_str(self, a, b):
-        '''test str''' 
+        '''test str'''
         # two strings
         self.assertEqual(add(a, b), a+b)
 
@@ -46,7 +46,7 @@ class Testmultiple(unittest.TestCase):
         self.assertEqual(add(a), a)
 
     def test_add_dict(self):
-        '''test dict'''   
+        '''test dict'''
         dict1 = {'a': 1}
         dict2 = {'b': 2}
         dict3 = {'a': 1, 'b': 2}
@@ -71,7 +71,7 @@ class Testmultiple(unittest.TestCase):
         b = B()
         c = C()
         d = D()
-        
+
         # before method
         self.assertEqual(beforefn(a), 'beforeA')
         self.assertEqual(a.before, 1)
@@ -97,6 +97,7 @@ class Testmultiple(unittest.TestCase):
         self.assertEqual(aroundfn(b), 'aroundB')
         self.assertEqual(aroundfn(c), 'aroundC')
         self.assertEqual(aroundfn(d), 'aroundD')
+
 
 if __name__ == '__main__':
     # The function around which the other functions should run
