@@ -20,8 +20,8 @@ class Testmultiple(unittest.TestCase):
     def test_add_float(self, a, b):
         '''test floats'''
         # two floats
-        if (not (math.isinf(a) or math.isinf(b))
-            and (not (math.isnan(a) or math.isnan(b)))):
+        if (not (math.isinf(a) or math.isinf(b)) and
+                (not (math.isnan(a) or math.isnan(b)))):
             self.assertEqual((add(a, b)-(a+b)) < 1e-5, True)
             self.assertEqual(add(a, b)-add(b, a) < 1e-5, True)
 
