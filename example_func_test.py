@@ -27,19 +27,19 @@ class Testmultiple(unittest.TestCase):
         # two floats
         if (not (math.isinf(a) or math.isinf(b)) and
                 (not (math.isnan(a) or math.isnan(b)))):
-            self.assertEqual(add(a, b)-a-b < 1e-4, True)
-            self.assertEqual(add(a, b)-add(b, a) < 1e-4, True)
+            self.assertEqual(1e5*(add(a, b)-a-b) < 1, True)
+            self.assertEqual(1e5*(add(a, b)-add(b, a)) < 1, True)
 
         # optional
-            self.assertEqual(abs(add(a)-a) < 1e-4, True)
+            self.assertEqual(1e5*(add(a)-a) < 1, True)
 
     @given(st.integers(), st.floats())
     def test_add_IntAndFloat(self, a, b):
         '''test int and float'''
         # two numbers
         if (not math.isinf(b)) and (not math.isnan(b)):
-            self.assertEqual(abs(add(a, b)-(a+b)) < 1e-4, True)
-            self.assertEqual(abs(add(a, b)-add(b, a)) < 1e-4, True)
+            self.assertEqual(1e5(add(a, b)-(a+b)) < 1, True)
+            self.assertEqual(1e5(add(a, b)-add(b, a)) < 1, True)
 
     @given(st.text(), st.text())
     def test_add_str(self, a, b):
