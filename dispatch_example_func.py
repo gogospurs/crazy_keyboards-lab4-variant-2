@@ -1,4 +1,10 @@
-from multipledispatch_module import *
+from multipledispatch_module import registry
+from multipledispatch_module import Dispatch
+from multipledispatch_module import dispatch
+from multipledispatch_module import combMethod
+from multipledispatch_module import call_next_before
+from multipledispatch_module import call_next_after
+from multipledispatch_module import before, after, around
 
 
 @dispatch(int, int)
