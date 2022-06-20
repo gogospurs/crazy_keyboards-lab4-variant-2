@@ -1,6 +1,3 @@
-from email.policy import default
-
-
 registry = {}
 
 

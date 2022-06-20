@@ -1,6 +1,11 @@
 import unittest
 from hypothesis import given,  strategies as st
-from dispatch_example_func import *
+from dispatch_example_func import add, A, B, C, D
+from dispatch_example_func import before_func
+from dispatch_example_func import after_func
+from dispatch_example_func import around_func
+from dispatch_example_func import beforefn, afterfn
+from dispatch_example_func import aroundfn
 import math
 
 
