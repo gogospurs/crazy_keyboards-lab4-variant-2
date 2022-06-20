@@ -9,13 +9,17 @@ Group Member:
 
 - implement a multiple-dispatch library for Python in
 
-Common Lisp Object System (CLOS) style by decorators.
+Common Lisp Object System (CLOS) style by decorators,
+
+and add the before, after, around method.
 
 ## Project structure
 
-- `multiple_dispatch.py` -- implementation of multiple-dispatch
+- `multipledispatch_module.py` -- multiple-dispatch library
 
-- `multiple_dispatch_test.py` -- unit and PBT tests for multiple-dispatch
+- `dispatch_example_func` -- example function implemented with library
+
+- `example_func_test.py` -- unit and PBT tests for example function
 
 ## Features
 
