@@ -75,21 +75,22 @@ class Testmultiple(unittest.TestCase):
         array4 = np.full(3, 1.0)
 
         # two  same shape array
-        self.assertEqual(add(array1, array2), np.full(3, 2))
+        res = add(array1, array2)
+        self.assertEqual((res==np.full(3, 2)).all(), True)
         
         # two different shape array
-        self.assertEqual(add(array1, array3), "the lenth of two array not equal")
+        self.assertEqual(add(array1, array3), "error")
         
         # optional
-        self.assertEqual(add(array1), array1)
+        self.assertEqual((add(array1) == array1).all(), True)
 
         # int and array
-        self.assertEqual(add(1, array1), np.full(3, 2))
-        self.assertEqual(add(1, array1), add(array1, 1))
+        self.assertEqual((add(1, array1) == np.full(3, 2)).all(), True)
+        self.assertEqual((add(1, array1) == add(array1, 1)).all(), True)
 
         # float and array
-        self.assertEqual(add(1.0, array4), np.full(3, 2.0))
-        self.assertEqual(add(1.0, array4), add(array4, 1.0))        
+        self.assertEqual((add(1.0, array4) == np.full(3, 2.0)).all(), True)
+        self.assertEqual((add(1.0, array4) == add(array4, 1.0)).all(), True)        
 
     @given(st.integers(), st.integers())
     def test_sub_int(self, a, b):
@@ -103,21 +104,25 @@ class Testmultiple(unittest.TestCase):
     @given(st.floats(), st.floats())
     def test_sub_float(self, a, b):
         '''test sub two float'''
-        # two float
-        self.assertEqual(sub(a, b), a-b)
+        if (not (math.isinf(a) or math.isinf(b)) and
+                (not (math.isnan(a) or math.isnan(b)))):
+            # two float
+            self.assertEqual(sub(a, b), a-b)
 
-        # optional
-        self.assertEqual(sub(a), a)
+            # optional
+            self.assertEqual(sub(a), a)
 
     @given(st.integers(), st.floats())
     def test_sub_intAndfloat(self, a, b):
         '''test int sub float'''
-        self.assertEqual(sub(a, b), a-b)
+        if not math.isinf(b) and not math.isnan(b):
+            self.assertEqual(sub(a, b), a-b)
 
     @given(st.floats(), st.integers())
     def test_sub_floatAndint(self, a, b):
         '''test float sub int'''
-        self.assertEqual(sub(a, b), a-b)
+        if not math.isinf(a) and not math.isnan(a):
+            self.assertEqual(sub(a, b), a-b)
     
     def test_sub_array(self):
         '''test sub two array'''
@@ -128,18 +133,18 @@ class Testmultiple(unittest.TestCase):
         # two array
         res = sub(array1, array2)
         self.assertEqual((res==np.zeros(3)).all(), True)
-        self.assertEqual(sub(array1, array3), "the lenth of two array not equal")
+        self.assertEqual(sub(array1, array3), "error")
 
         # optional
-        self.assertEqual(sub(array1), array1)
+        self.assertEqual((sub(array1) == array1).all(), True)
 
         # int and array
-        self.assertEqual(sub(1, array1), np.zeros(3))
-        self.assertEqual(sub(array1, 1), np.zeros(3))
+        self.assertEqual((sub(1, array1) == np.zeros(3)).all(), True)
+        self.assertEqual((sub(array1, 1) == np.zeros(3)).all(), True)
 
         # float and array
-        self.assertEqual(sub(array4, 1.0), np.full(3, 0.0))
-        self.assertEqual(sub(1.0, array4), np.full(3, 0.0))
+        self.assertEqual((sub(array4, 1.0) == np.full(3, 0.0)).all(), True)
+        self.assertEqual((sub(1.0, array4) == np.full(3, 0.0)).all(), True)
 
     @given(st.integers(), st.integers())
     def test_multiple_int(self, a, b):
@@ -154,22 +159,26 @@ class Testmultiple(unittest.TestCase):
     @given(st.floats(), st.floats())
     def test_multiple_float(self, a, b):
         '''test multiple float'''
-        # two float
-        self.assertEqual(multiple(a, b), a*b)
-        self.assertEqual(multiple(a, b), multiple(b, a))
+        if (not (math.isinf(a) or math.isinf(b)) and
+                (not (math.isnan(a) or math.isnan(b)))):
+            # two float
+            self.assertEqual(multiple(a, b), a*b)
+            self.assertEqual(multiple(a, b), multiple(b, a))
 
-        # optional
-        self.assertEqual(multiple(a), a)
+            # optional
+            self.assertEqual(multiple(a), a)
 
     @given(st.integers(), st.floats())
     def test_multiple_intAndfloat(self, a, b):
         '''test int and float'''
-        self.assertEqual(multiple(a, b), a*b)
+        if not math.isinf(b) and not math.isnan(b):
+            self.assertEqual(multiple(a, b), a*b)
 
     @given(st.floats(), st.integers())
     def test_multiple_floatAndint(self, a, b):
         '''test float and int'''
-        self.assertEqual(multiple(a, b), a*b)
+        if not math.isinf(a) and not math.isnan(a):
+            self.assertEqual(multiple(a, b), a*b)
 
     def test_multiple_array(self):
         '''test array'''
@@ -178,20 +187,20 @@ class Testmultiple(unittest.TestCase):
         array3 = np.ones(4)
         array4 = np.full(3, 2.0)
         # two array
-        self.assertEqual(multiple(array1, array2), np.full(3, 1))
-        self.assertEqual(multiple(array1, array3),
-                         "the lenth of two array not equal")
+        res = multiple(array1, array2)
+        self.assertEqual((res == np.full(3, 1)).all(), True)
+        self.assertEqual(multiple(array1, array3), "error")
         
         # optional
-        self.assertEqual(multiple(array1), array1)
+        self.assertEqual((multiple(array1) == array1).all(), True)
 
         # int and array
-        self.assertEqual(multiple(1, array1), 1*array1)
-        self.assertEqual(multiple(1, array1), multiple(array1, 1))
+        self.assertEqual((multiple(1, array1) == 1*array1).all(), True)
+        self.assertEqual((multiple(1, array1) == multiple(array1, 1)).all(), True)
 
         # float and array
-        self.assertEqual(multiple(1.0, array4), 1.0*array4)
-        self.assertEqual(multiple(array4, 1.0), multiple(1.0, array4))
+        self.assertEqual((multiple(1.0, array4) == 1.0*array4).all(), True)
+        self.assertEqual((multiple(array4, 1.0) == multiple(1.0, array4)).all(), True)
 
     def test_inheritance(self):
         '''test inheritance and multiple inheritance with

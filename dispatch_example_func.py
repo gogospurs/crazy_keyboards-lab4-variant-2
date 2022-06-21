@@ -86,8 +86,7 @@ def add(array1, array2):
     if(array1.shape == array2.shape):
         return array1 + array2
     else:
-        raise Exception("the lenth of two array not equal")
-
+        return 'error'
 
 @dispatch(np.ndarray)
 def add(array1):
@@ -163,7 +162,7 @@ def sub(array1, array2):
     if array1.shape == array2.shape:
         return array1 - array2
     else:
-        raise Exception("the lenth of two array not equal")
+        return 'error'
 
 
 @dispatch(np.ndarray)
@@ -242,7 +241,7 @@ def multiple(array1, array2):
     if array1.shape == array2.shape:
         return array1 * array2
     else:
-        raise Exception("the lenth of two array not equal")
+        return 'error'
 
 
 @dispatch(np.ndarray)
