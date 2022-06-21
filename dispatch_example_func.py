@@ -88,6 +88,7 @@ def add(array1, array2):
     else:
         return 'error'
 
+
 @dispatch(np.ndarray)
 def add(array1):
     '''array2 is filled with zero'''

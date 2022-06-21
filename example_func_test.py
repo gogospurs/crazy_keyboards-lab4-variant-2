@@ -76,11 +76,11 @@ class Testmultiple(unittest.TestCase):
 
         # two  same shape array
         res = add(array1, array2)
-        self.assertEqual((res==np.full(3, 2)).all(), True)
-        
+        self.assertEqual((res == np.full(3, 2)).all(), True)
+
         # two different shape array
         self.assertEqual(add(array1, array3), "error")
-        
+
         # optional
         self.assertEqual((add(array1) == array1).all(), True)
 
@@ -90,14 +90,14 @@ class Testmultiple(unittest.TestCase):
 
         # float and array
         self.assertEqual((add(1.0, array4) == np.full(3, 2.0)).all(), True)
-        self.assertEqual((add(1.0, array4) == add(array4, 1.0)).all(), True)        
+        self.assertEqual((add(1.0, array4) == add(array4, 1.0)).all(), True)
 
     @given(st.integers(), st.integers())
     def test_sub_int(self, a, b):
         '''test sub two int'''
         # two int
         self.assertEqual(sub(a, b), a-b)
-        
+
         # optional
         self.assertEqual(sub(a), a)
 
@@ -123,7 +123,7 @@ class Testmultiple(unittest.TestCase):
         '''test float sub int'''
         if not math.isinf(a) and not math.isnan(a):
             self.assertEqual(sub(a, b), a-b)
-    
+
     def test_sub_array(self):
         '''test sub two array'''
         array1 = np.ones(3)
@@ -132,7 +132,7 @@ class Testmultiple(unittest.TestCase):
         array4 = np.full(3, 1.0)
         # two array
         res = sub(array1, array2)
-        self.assertEqual((res==np.zeros(3)).all(), True)
+        self.assertEqual((res == np.zeros(3)).all(), True)
         self.assertEqual(sub(array1, array3), "error")
 
         # optional
@@ -186,21 +186,24 @@ class Testmultiple(unittest.TestCase):
         array2 = np.ones(3)
         array3 = np.ones(4)
         array4 = np.full(3, 2.0)
+
         # two array
         res = multiple(array1, array2)
         self.assertEqual((res == np.full(3, 1)).all(), True)
         self.assertEqual(multiple(array1, array3), "error")
-        
+
         # optional
         self.assertEqual((multiple(array1) == array1).all(), True)
 
         # int and array
         self.assertEqual((multiple(1, array1) == 1*array1).all(), True)
-        self.assertEqual((multiple(1, array1) == multiple(array1, 1)).all(), True)
+        res = (multiple(1, array1) == multiple(array1, 1)).all()
+        self.assertEqual(res, True)
 
         # float and array
         self.assertEqual((multiple(1.0, array4) == 1.0*array4).all(), True)
-        self.assertEqual((multiple(array4, 1.0) == multiple(1.0, array4)).all(), True)
+        res = (multiple(array4,1.0) == multiple(1.0,array4)).all()
+        self.assertEqual(res, True)
 
     def test_inheritance(self):
         '''test inheritance and multiple inheritance with
