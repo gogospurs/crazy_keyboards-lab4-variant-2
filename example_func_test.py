@@ -1,12 +1,10 @@
 import unittest
 from hypothesis import given,  strategies as st
-from dispatch_example_func import add, A, B, C, D
-from dispatch_example_func import before_func
-from dispatch_example_func import after_func
-from dispatch_example_func import around_func
+from dispatch_example_func import add, multiple, sub, A, B, C, D
 from dispatch_example_func import beforefn, afterfn
-from dispatch_example_func import aroundfn
+from dispatch_example_func import aroundfn, combfn
 import math
+import numpy as np
 
 
 class Testmultiple(unittest.TestCase):
@@ -69,6 +67,132 @@ class Testmultiple(unittest.TestCase):
         # optional
         self.assertEqual(add(a), a)
 
+    def test_add_np(self):
+        '''test array'''
+        array1 = np.ones(3)
+        array2 = np.ones(3)
+        array3 = np.ones(4)
+        array4 = np.full(3, 1.0)
+
+        # two  same shape array
+        self.assertEqual(add(array1, array2), np.full(3, 2))
+        
+        # two different shape array
+        self.assertEqual(add(array1, array3), "the lenth of two array not equal")
+        
+        # optional
+        self.assertEqual(add(array1), array1)
+
+        # int and array
+        self.assertEqual(add(1, array1), np.full(3, 2))
+        self.assertEqual(add(1, array1), add(array1, 1))
+
+        # float and array
+        self.assertEqual(add(1.0, array4), np.full(3, 2.0))
+        self.assertEqual(add(1.0, array4), add(array4, 1.0))        
+
+    @given(st.integers(), st.integers())
+    def test_sub_int(self, a, b):
+        '''test sub two int'''
+        # two int
+        self.assertEqual(sub(a, b), a-b)
+        
+        # optional
+        self.assertEqual(sub(a), a)
+
+    @given(st.floats(), st.floats())
+    def test_sub_float(self, a, b):
+        '''test sub two float'''
+        # two float
+        self.assertEqual(sub(a, b), a-b)
+
+        # optional
+        self.assertEqual(sub(a), a)
+
+    @given(st.integers(), st.floats())
+    def test_sub_intAndfloat(self, a, b):
+        '''test int sub float'''
+        self.assertEqual(sub(a, b), a-b)
+
+    @given(st.floats(), st.integers())
+    def test_sub_floatAndint(self, a, b):
+        '''test float sub int'''
+        self.assertEqual(sub(a, b), a-b)
+    
+    def test_sub_array(self):
+        '''test sub two array'''
+        array1 = np.ones(3)
+        array2 = np.ones(3)
+        array3 = np.ones(4)
+        array4 = np.full(3, 1.0)
+        # two array
+        res = sub(array1, array2)
+        self.assertEqual((res==np.zeros(3)).all(), True)
+        self.assertEqual(sub(array1, array3), "the lenth of two array not equal")
+
+        # optional
+        self.assertEqual(sub(array1), array1)
+
+        # int and array
+        self.assertEqual(sub(1, array1), np.zeros(3))
+        self.assertEqual(sub(array1, 1), np.zeros(3))
+
+        # float and array
+        self.assertEqual(sub(array4, 1.0), np.full(3, 0.0))
+        self.assertEqual(sub(1.0, array4), np.full(3, 0.0))
+
+    @given(st.integers(), st.integers())
+    def test_multiple_int(self, a, b):
+        '''test multiple int'''
+        # two int
+        self.assertEqual(multiple(a, b), a*b)
+        self.assertEqual(multiple(a, b), multiple(b, a))
+
+        # optional
+        self.assertEqual(multiple(a), a)
+
+    @given(st.floats(), st.floats())
+    def test_multiple_float(self, a, b):
+        '''test multiple float'''
+        # two float
+        self.assertEqual(multiple(a, b), a*b)
+        self.assertEqual(multiple(a, b), multiple(b, a))
+
+        # optional
+        self.assertEqual(multiple(a), a)
+
+    @given(st.integers(), st.floats())
+    def test_multiple_intAndfloat(self, a, b):
+        '''test int and float'''
+        self.assertEqual(multiple(a, b), a*b)
+
+    @given(st.floats(), st.integers())
+    def test_multiple_floatAndint(self, a, b):
+        '''test float and int'''
+        self.assertEqual(multiple(a, b), a*b)
+
+    def test_multiple_array(self):
+        '''test array'''
+        array1 = np.ones(3)
+        array2 = np.ones(3)
+        array3 = np.ones(4)
+        array4 = np.full(3, 2.0)
+        # two array
+        self.assertEqual(multiple(array1, array2), np.full(3, 1))
+        self.assertEqual(multiple(array1, array3),
+                         "the lenth of two array not equal")
+        
+        # optional
+        self.assertEqual(multiple(array1), array1)
+
+        # int and array
+        self.assertEqual(multiple(1, array1), 1*array1)
+        self.assertEqual(multiple(1, array1), multiple(array1, 1))
+
+        # float and array
+        self.assertEqual(multiple(1.0, array4), 1.0*array4)
+        self.assertEqual(multiple(array4, 1.0), multiple(1.0, array4))
+
     def test_inheritance(self):
         '''test inheritance and multiple inheritance with
         before, after, around method'''
@@ -102,6 +226,12 @@ class Testmultiple(unittest.TestCase):
         self.assertEqual(aroundfn(b), 'aroundB')
         self.assertEqual(aroundfn(c), 'aroundC')
         self.assertEqual(aroundfn(d), 'aroundD')
+
+        # comb methond
+        self.assertEqual(combfn(a), 'combA')
+        self.assertEqual(combfn(b), 'combB')
+        self.assertEqual(combfn(c), 'combC')
+        self.assertEqual(combfn(d), 'combD')
 
 
 if __name__ == '__main__':

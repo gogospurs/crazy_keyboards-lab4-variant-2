@@ -1,10 +1,9 @@
-from multipledispatch_module import registry
-from multipledispatch_module import Dispatch
 from multipledispatch_module import dispatch
 from multipledispatch_module import combMethod
 from multipledispatch_module import call_next_before
 from multipledispatch_module import call_next_after
 from multipledispatch_module import before, after, around
+import numpy as np
 
 
 @dispatch(int, int)
@@ -79,6 +78,203 @@ def add(list1, list2):
 def add(list1):
     '''list2 is optional and is empty list []'''
     return list1
+
+
+@dispatch(np.ndarray, np.ndarray)
+def add(array1, array2):
+    '''add two array'''
+    if(array1.shape == array2.shape):
+        return array1 + array2
+    else:
+        raise Exception("the lenth of two array not equal")
+
+
+@dispatch(np.ndarray)
+def add(array1):
+    '''array2 is filled with zero'''
+    return array1
+
+
+@dispatch(int, np.ndarray)
+def add(int1, array1):
+    '''add int and array'''
+    array2 = np.full(array1.shape, int1)
+    return add(array1, array2)
+
+
+@dispatch(np.ndarray, int)
+def add(array1, int1):
+    '''add array and int'''
+    return add(int1, array1)
+
+
+@dispatch(float, np.ndarray)
+def add(float1, array1):
+    '''add float and array'''
+    array2 = np.full(array1.shape, float1)
+    return add(array1, array2)
+
+
+@dispatch(np.ndarray, float)
+def add(array1, float1):
+    '''add array and float'''
+    return add(float1, array1)
+
+
+@dispatch(int, int)
+def sub(int1, int2):
+    '''sub two int'''
+    return int1 - int2
+
+
+@dispatch(int)
+def sub(int1):
+    '''int2 is zero'''
+    return int1
+
+
+@dispatch(float, float)
+def sub(float1, float2):
+    '''sub two float'''
+    return float1 - float2
+
+
+@dispatch(float)
+def sub(float1):
+    '''float2 is zero'''
+    return float1
+
+
+@dispatch(int, float)
+def sub(int1, float1):
+    '''int sub float'''
+    return int1 - float1
+
+
+@dispatch(float, int)
+def sub(float1, int1):
+    '''float sub int'''
+    return float1 - int1
+
+
+@dispatch(np.ndarray, np.ndarray)
+def sub(array1, array2):
+    '''sub two array'''
+    if array1.shape == array2.shape:
+        return array1 - array2
+    else:
+        raise Exception("the lenth of two array not equal")
+
+
+@dispatch(np.ndarray)
+def sub(array1):
+    '''array2 is filled with zero'''
+    return array1
+
+
+@dispatch(int, np.ndarray)
+def sub(int1, array1):
+    '''sub int and array'''
+    array2 = np.full(array1.shape, int1)
+    return sub(array2, array1)
+
+
+@dispatch(np.ndarray, int)
+def sub(array1, int1):
+    '''sub array and int'''
+    array2 = np.full(array1.shape, int1)
+    return sub(array1, array2)
+
+
+@dispatch(float, np.ndarray)
+def sub(float1, array1):
+    '''sub float and array'''
+    array2 = np.full(array1.shape, float1)
+    return sub(array2, array1)
+
+
+@dispatch(np.ndarray, float)
+def sub(array1, float1):
+    '''sub array and float'''
+    array2 = np.full(array1.shape, float1)
+    return sub(array1, array2)
+
+
+@dispatch(int, int)
+def multiple(int1, int2):
+    '''multiple two int'''
+    return int1 * int2
+
+
+@dispatch(int)
+def multiple(int1):
+    '''int2 is 1'''
+    return int1
+
+
+@dispatch(float, float)
+def multiple(float1, float2):
+    '''multiple two float'''
+    return float1 * float2
+
+
+@dispatch(float)
+def multiple(float1):
+    '''float2 is 1'''
+    return float1
+
+
+@dispatch(float, int)
+def multiple(float1, int1):
+    '''multiple float and int'''
+    return float1 * int1
+
+
+@dispatch(int, float)
+def multiple(int1, float1):
+    '''multiple int and float'''
+    return int1 * float1
+
+
+@dispatch(np.ndarray, np.ndarray)
+def multiple(array1, array2):
+    '''multiple two array'''
+    if array1.shape == array2.shape:
+        return array1 * array2
+    else:
+        raise Exception("the lenth of two array not equal")
+
+
+@dispatch(np.ndarray)
+def multiple(array1):
+    '''array2 is filled with one'''
+    return array1
+
+
+@dispatch(int, np.ndarray)
+def multiple(int1, array1):
+    '''multiple int and array'''
+    array2 = np.full(array1.shape, int1)
+    return multiple(array1, array2)
+
+
+@dispatch(np.ndarray, int)
+def multiple(array1, int1):
+    '''multiple array and int'''
+    return multiple(int1, array1)
+
+
+@dispatch(float, np.ndarray)
+def multiple(float1, array1):
+    '''multiple array and float'''
+    array2 = np.full(array1.shape, float1)
+    return multiple(array1, array2)
+
+
+@dispatch(np.ndarray, float)
+def multiple(array1, float1):
+    '''multiple float and array'''
+    return multiple(float1, array1)
 
 
 class A(object):
@@ -179,25 +375,49 @@ def afterfn(object1):
 
 
 # around
+@around(around_func)
+@dispatch(A)
+def aroundfn(object1):
+    return 'aroundA'
+
+
+@around(around_func)
+@dispatch(B)
+def aroundfn(object1):
+    return 'aroundB'
+
+
+@around(around_func)
+@dispatch(C)
+def aroundfn(object1):
+    return 'aroundC'
+
+
+@around(around_func)
+@dispatch(D)
+def aroundfn(object1):
+    return 'aroundD'
+
+
 @combMethod(before=before_func, after=after_func, around=around_func)
 @dispatch(A)
-def aroundfn(object2):
-    return 'aroundA'
+def combfn(object2):
+    return 'combA'
 
 
 @combMethod(before=before_func, after=after_func, around=around_func)
 @dispatch(B)
-def aroundfn(object2):
-    return 'aroundB'
+def combfn(object2):
+    return 'combB'
 
 
 @combMethod(before=before_func, after=after_func, around=around_func)
 @dispatch(C)
-def aroundfn(object3):
-    return 'aroundC'
+def combfn(object3):
+    return 'combC'
 
 
 @combMethod(before=before_func, after=after_func, around=around_func)
 @dispatch(D)
-def aroundfn(object4):
-    return 'aroundD'
+def combfn(object4):
+    return 'combD'
