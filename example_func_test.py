@@ -202,7 +202,7 @@ class Testmultiple(unittest.TestCase):
 
         # float and array
         self.assertEqual((multiple(1.0, array4) == 1.0*array4).all(), True)
-        res = (multiple(array4,1.0) == multiple(1.0,array4)).all()
+        res = (multiple(array4, 1.0) == multiple(1.0, array4)).all()
         self.assertEqual(res, True)
 
     def test_inheritance(self):
