@@ -11,7 +11,7 @@ Group Member:
 
 Common Lisp Object System (CLOS) style by decorators,
 
-and add the before, after, around method.
+and add the before, after, around and combination method.
 
 ## Project structure
 
@@ -27,7 +27,15 @@ and add the before, after, around method.
 
 `test_add_list`, `test_add_str`, `test_add_inheritance`,
 
-`test_add_IntAndFloat`
+`test_add_IntAndFloat`, `test_add_np`, `test_sub_int`,
+
+`test_sub_float`, `test_sub_intAndfloat`, `test_sub_floatAndint`,
+
+`test_sub_array`, `test_multiple_int`, `test_multiple_float`,
+
+`test_multiple_intAndfloat`, `test_multiple_floatAndint`,
+
+`test_multiple_array`
 
 ## Contribution
 
@@ -48,15 +56,18 @@ the last one is the test part.
 
 ## Conclusion
 
-- First of all, in this lab,
+- First of all, in this lab, we met many problems that need to be
 
-we met many problems that need to be considered as a library developer.
+considered as a library developer. An excellent container library
 
-An excellent container library should support functions of variable objects.
+should support functions of variable objects. Function, which helped
 
-Function, which helped us detect many problems.
+us detect many problems.
 
 ## Changelog
+
+-21.03.2022 - 1
+  -support array operate, and add sub and multiple funciton
 
 -20.06.2022 - 0
   -Initial
